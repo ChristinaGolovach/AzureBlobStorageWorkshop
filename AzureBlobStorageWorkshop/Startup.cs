@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AzureBlobStorageWorkshop.Services.Interfaces;
+using AzureBlobStorageWorkshop.Services;
 
 namespace AzureBlobStorageWorkshop
 {
@@ -25,6 +27,9 @@ namespace AzureBlobStorageWorkshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string cloudStorageConnection = Configuration["Data:CloudStorageConnectionString:CloudDataStorage"];
+
+            services.AddScoped<IStorageService>(s => new StorageService(cloudStorageConnection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

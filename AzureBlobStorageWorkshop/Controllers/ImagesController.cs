@@ -47,15 +47,17 @@ namespace AzureBlobStorageWorkshop.Controllers
         [HttpPost]
         public async Task<ActionResult> PostFile(IFormFile file)
         {
-            if (file != null)
+            if (file == null)
             {
-                using (var stream = file.OpenReadStream())
-                {
-                    await _storageService.UploadDataAsync(stream, file.FileName);
-                }
+                return BadRequest();               
             }
 
-            return Ok();
+            using (var stream = file.OpenReadStream())
+            {
+                var blobId = await _storageService.UploadDataAsync(stream, file.FileName);
+
+                return Ok(blobId);
+            }           
         }
     }
 }

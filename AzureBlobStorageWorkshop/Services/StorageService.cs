@@ -43,18 +43,22 @@ namespace AzureBlobStorageWorkshop.Services
             return null;
         }
 
-        public async Task UploadDataAsync(Stream dataSource, string fileName) 
+        public async Task<string> UploadDataAsync(Stream dataSource, string fileName) 
         {
             var blobContainer = _blobClient.GetContainerReference(_containerName);
 
             await blobContainer.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null).ConfigureAwait(false);
 
-            var blockBlob = blobContainer.GetBlockBlobReference(fileName);
+            var blobId = Guid.NewGuid().ToString();
+
+            var blockBlob = blobContainer.GetBlockBlobReference(blobId);
 
             using (dataSource)
             {
                 await blockBlob.UploadFromStreamAsync(dataSource).ConfigureAwait(false);
             }
+
+            return blobId;
         }
 
         public async Task<IEnumerable<string>> GetBlobNameListAsync()

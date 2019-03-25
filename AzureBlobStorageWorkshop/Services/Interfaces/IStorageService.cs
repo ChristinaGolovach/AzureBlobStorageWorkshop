@@ -10,6 +10,6 @@ namespace AzureBlobStorageWorkshop.Services.Interfaces
     {
         Task<IEnumerable<string>> GetBlobNameListAsync();
         Task<Stream> DownloadDataAsync(string id);
-        Task UploadDataAsync(Stream dataSource, string fileName);        
+        Task<string> UploadDataAsync(Stream dataSource, string fileName);        
     }
 }

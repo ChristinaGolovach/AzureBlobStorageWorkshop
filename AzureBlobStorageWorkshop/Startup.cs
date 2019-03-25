@@ -29,7 +29,10 @@ namespace AzureBlobStorageWorkshop
         {
             string cloudStorageConnection = Configuration["Data:CloudStorageConnectionString:CloudDataStorage"];
 
-            services.AddScoped<IStorageService>(s => new StorageService(cloudStorageConnection));
+            //TODO read - think https://medium.com/volosoft/asp-net-core-dependency-injection-best-practices-tips-tricks-c6e9c67f9d96
+            services.AddScoped<IBlobStorageService>(s => new BlobStorageService(cloudStorageConnection));
+            services.AddScoped<IQueueStorageService>(s => new QueueStorageService(cloudStorageConnection));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

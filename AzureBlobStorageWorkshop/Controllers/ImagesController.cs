@@ -13,17 +13,19 @@ namespace AzureBlobStorageWorkshop.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private IStorageService _storageService;
+        private IBlobStorageService _blobStorageService;
+        private IQueueStorageService _queueStorageService;
 
-        public ImagesController(IStorageService storageService)
+        public ImagesController(IBlobStorageService blobStorageService, IQueueStorageService queueStorageService)
         {
-            _storageService = storageService;
+            _blobStorageService = blobStorageService ?? throw new ArgumentNullException($"The {nameof(blobStorageService)} van not be null.");
+            _queueStorageService = queueStorageService ?? throw new ArgumentNullException($"The {nameof(queueStorageService)} van not be null.");
         }
-        
+
         [HttpGet]
-        public async Task<ActionResult> GetAllFile()
+        public async Task<ActionResult> GetAllFileList()
         {
-            var result =  await _storageService.GetBlobNameListAsync();
+            var result =  await _blobStorageService.GetBlobNameListAsync();
 
             return Ok(result);
         }
@@ -31,7 +33,7 @@ namespace AzureBlobStorageWorkshop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetFile(string id)
         {
-            var dataStream = await _storageService.DownloadDataAsync(id);           
+            var dataStream = await _blobStorageService.DownloadDataAsync(id);           
 
             if (dataStream == null)
             {
@@ -54,9 +56,11 @@ namespace AzureBlobStorageWorkshop.Controllers
 
             using (var stream = file.OpenReadStream())
             {
-                var blobId = await _storageService.UploadDataAsync(stream, file.FileName);
+                await _blobStorageService.UploadDataAsync(stream, file.FileName);
 
-                return Ok(blobId);
+                string messageId =  await _queueStorageService.EnqueueMessageAsync($"The file {nameof(file.Name)} has been add.");
+
+                return Ok(); //blobId
             }           
         }
     }

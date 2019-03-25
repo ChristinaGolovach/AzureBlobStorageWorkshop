@@ -9,18 +9,18 @@ using AzureBlobStorageWorkshop.Services.Interfaces;
 
 namespace AzureBlobStorageWorkshop.Services
 {
-    public class StorageService : IStorageService
+    public class BlobStorageService : IBlobStorageService
     {
-        private readonly string _containerName = "imagescontainer";
-        private readonly string _storageConnectionString;        
+        //TODO move _containerName outside
+        private readonly string _containerName = "imagescontainer";     
         private CloudStorageAccount _storageAccount;
         private CloudBlobClient _blobClient; 
 
-        public StorageService(string storageConnectionString)
+        public BlobStorageService(string storageConnectionString)
         {
-            _storageConnectionString = storageConnectionString ?? throw new ArgumentNullException($"The {nameof(storageConnectionString)} can not be null.");
+            storageConnectionString = storageConnectionString ?? throw new ArgumentNullException($"The {nameof(storageConnectionString)} can not be null.");
 
-            _storageAccount = CloudStorageAccount.Parse(_storageConnectionString);
+            _storageAccount = CloudStorageAccount.Parse(storageConnectionString);
             _blobClient = _storageAccount.CreateCloudBlobClient();
             _blobClient.DefaultRequestOptions = new BlobRequestOptions() { ParallelOperationThreadCount = 4 };
         }
@@ -43,22 +43,22 @@ namespace AzureBlobStorageWorkshop.Services
             return null;
         }
 
-        public async Task<string> UploadDataAsync(Stream dataSource, string fileName) 
+        public async Task UploadDataAsync(Stream dataSource, string fileName) 
         {
             var blobContainer = _blobClient.GetContainerReference(_containerName);
 
             await blobContainer.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null).ConfigureAwait(false);
 
-            var blobId = Guid.NewGuid().ToString();
+            //var blobId = Guid.NewGuid().ToString();
 
-            var blockBlob = blobContainer.GetBlockBlobReference(blobId);
+            var blockBlob = blobContainer.GetBlockBlobReference(fileName); //blobId
 
             using (dataSource)
             {
                 await blockBlob.UploadFromStreamAsync(dataSource).ConfigureAwait(false);
             }
 
-            return blobId;
+            //return blobId;
         }
 
         public async Task<IEnumerable<string>> GetBlobNameListAsync()

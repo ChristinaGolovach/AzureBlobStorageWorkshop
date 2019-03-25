@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace AzureBlobStorageWorkshop.Services.Interfaces
 {
-    public interface IStorageService
+    public interface IBlobStorageService
     {
         Task<IEnumerable<string>> GetBlobNameListAsync();
         Task<Stream> DownloadDataAsync(string id);
-        Task<string> UploadDataAsync(Stream dataSource, string fileName);        
+        //Task<string> UploadDataAsync(Stream dataSource, string fileName);  
+        Task UploadDataAsync(Stream dataSource, string fileName);
     }
 }

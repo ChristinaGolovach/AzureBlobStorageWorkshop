@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.Azure.WebJobs;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Processors.Transforms;
-//using SixLabors.ImageSharp.Processing.Processors.
-
+using System.Drawing;
+using System.Drawing.Imaging;
+using StackBlur.Extensions;
 
 namespace ImageWebJob
 {
@@ -24,11 +15,15 @@ namespace ImageWebJob
             [Blob("imagescontainer/{queueTrigger}", FileAccess.Read)] Stream inputImageBlob, 
             [Blob("imagescontainer/{queueTrigger}", FileAccess.Write)] Stream outputImageBlob)
         {
-            using (var image = Image.Load(inputImageBlob))
+            using (var bitmap = new Bitmap(inputImageBlob))
             {
-                image.Mutate(i => i.GaussianBlur());
+                int radius = 100;
 
-                image.SaveAsJpeg(outputImageBlob);
+                bitmap.StackBlur(radius);
+
+                ImageFormat imgFormat = bitmap.RawFormat;
+
+                bitmap.Save(outputImageBlob, imgFormat);
             }
         }
     }

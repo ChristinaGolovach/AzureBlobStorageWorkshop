@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AzureBlobStorageWorkshop.Services.Interfaces;
 using AzureBlobStorageWorkshop.Services;
+using NLog.Web;
+using NLog.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace AzureBlobStorageWorkshop
 {
@@ -32,12 +35,16 @@ namespace AzureBlobStorageWorkshop
             //TODO read - think https://medium.com/volosoft/asp-net-core-dependency-injection-best-practices-tips-tricks-c6e9c67f9d96
             services.AddScoped<IBlobStorageService>(s => new BlobStorageService(cloudStorageConnection));
             services.AddScoped<IQueueStorageService>(s => new QueueStorageService(cloudStorageConnection));
+            services.AddScoped<IImageService, ImageService>();
+
+            //needed for NLog.Web
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)//, IWebHostBuilder webHostBuilder)
         {
             if (env.IsDevelopment())
             {
@@ -47,6 +54,13 @@ namespace AzureBlobStorageWorkshop
             {
                 app.UseHsts();
             }
+
+            loggerFactory.AddNLog();
+
+            app.AddNLogWeb();
+            //webHostBuilder.UseNLog();
+
+            // env.ConfigureNLog(env.WebRootPath + "/nlog.config");//("Nlog.config");          
 
             app.UseHttpsRedirection();
             app.UseMvc();

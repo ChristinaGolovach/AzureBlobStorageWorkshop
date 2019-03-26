@@ -61,7 +61,7 @@ namespace AzureBlobStorageWorkshop.Services
         {
             var blobContainer = _blobClient.GetContainerReference(_containerName);
 
-            IEnumerable<string> allBlockBlobs; //= new List<string>();
+            IEnumerable<string> allBlockBlobs; 
 
             BlobContinuationToken blobContinuationToken = null;
             do
@@ -69,14 +69,6 @@ namespace AzureBlobStorageWorkshop.Services
                 var resultSegment = await blobContainer.ListBlobsSegmentedAsync(blobContinuationToken).ConfigureAwait(false);
 
                 blobContinuationToken = resultSegment.ContinuationToken;
-
-                //foreach (IListBlobItem item in resultSegment.Results)
-                //{                
-                //    if (item is CloudBlockBlob blockBlob)
-                //    {
-                //        allBlockBlobs.Add(blockBlob.Name);
-                //    }
-                //}
 
                 allBlockBlobs = resultSegment.Results.Select(i => i is CloudBlockBlob blockBlob ? blockBlob.Name : null).Where(b => b != null);
 

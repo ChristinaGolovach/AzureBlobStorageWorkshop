@@ -58,7 +58,7 @@ namespace AzureBlobStorageWorkshop.Controllers
             {
                 await _blobStorageService.UploadDataAsync(stream, file.FileName);
 
-                string messageId =  await _queueStorageService.EnqueueMessageAsync($"The file {nameof(file.Name)} has been add.");
+                string messageId =  await _queueStorageService.EnqueueMessageAsync(file.FileName);
 
                 return Ok(); //blobId
             }           

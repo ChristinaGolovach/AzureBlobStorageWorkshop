@@ -49,23 +49,19 @@ namespace AzureBlobStorageWorkshop.Services
 
             await blobContainer.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null).ConfigureAwait(false);
 
-            //var blobId = Guid.NewGuid().ToString();
-
-            var blockBlob = blobContainer.GetBlockBlobReference(fileName); //blobId
+            var blockBlob = blobContainer.GetBlockBlobReference(fileName);
 
             using (dataSource)
             {
                 await blockBlob.UploadFromStreamAsync(dataSource).ConfigureAwait(false);
             }
-
-            //return blobId;
         }
 
         public async Task<IEnumerable<string>> GetBlobNameListAsync()
         {
             var blobContainer = _blobClient.GetContainerReference(_containerName);
 
-            List<string> allBlockBlobs = new List<string>();
+            IEnumerable<string> allBlockBlobs; //= new List<string>();
 
             BlobContinuationToken blobContinuationToken = null;
             do
@@ -74,13 +70,15 @@ namespace AzureBlobStorageWorkshop.Services
 
                 blobContinuationToken = resultSegment.ContinuationToken;
 
-                foreach (IListBlobItem item in resultSegment.Results)
-                {                
-                    if (item is CloudBlockBlob blockBlob)
-                    {
-                        allBlockBlobs.Add(blockBlob.Name);
-                    }
-                }
+                //foreach (IListBlobItem item in resultSegment.Results)
+                //{                
+                //    if (item is CloudBlockBlob blockBlob)
+                //    {
+                //        allBlockBlobs.Add(blockBlob.Name);
+                //    }
+                //}
+
+                allBlockBlobs = resultSegment.Results.Select(i => i is CloudBlockBlob blockBlob ? blockBlob.Name : null).Where(b => b != null);
 
             } while (blobContinuationToken != null);
 

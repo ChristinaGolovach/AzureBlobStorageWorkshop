@@ -60,7 +60,7 @@ namespace AzureBlobStorageWorkshop.Controllers
 
                 string messageId =  await _queueStorageService.EnqueueMessageAsync(file.FileName);
 
-                return Ok(); //blobId
+                return Ok(file.FileName);
             }           
         }
     }

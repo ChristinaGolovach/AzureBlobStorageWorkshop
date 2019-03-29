@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using AzureBlobStorageWorkshop.Services.Interfaces;
 using NLog.Extensions.AzureTableStorage;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace AzureBlobStorageWorkshop.Controllers
 {

@@ -38,13 +38,13 @@ namespace AzureBlobStorageWorkshop
             services.AddScoped<IImageService, ImageService>();
 
             //needed for NLog.Web
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)//, IWebHostBuilder webHostBuilder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -55,11 +55,13 @@ namespace AzureBlobStorageWorkshop
                 app.UseHsts();
             }
 
-            loggerFactory.AddNLog();
+            //add NLog to ASP.NET Core
+            //loggerFactory.AddNLog();
 
-            app.AddNLogWeb();
-            //webHostBuilder.UseNLog();
+            //add NLog.Web
+            //app.AddNLogWeb();
 
+            //app.AddNLogWeb();
             // env.ConfigureNLog(env.WebRootPath + "/nlog.config");//("Nlog.config");          
 
             app.UseHttpsRedirection();

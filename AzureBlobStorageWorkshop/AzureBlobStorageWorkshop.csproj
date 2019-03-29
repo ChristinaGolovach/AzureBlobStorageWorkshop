@@ -13,16 +13,18 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
-    <PackageReference Include="NLog.Config" Version="4.5.11" />
+    <PackageReference Include="NLog" Version="4.6.0" />
+    <PackageReference Include="NLog.Config" Version="4.6.0" />
     <PackageReference Include="NLog.Extensions.AzureTableStorage" Version="1.2.0-rc1" />
-    <PackageReference Include="NLog.Schema" Version="4.5.11" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.4.0" />
+    <PackageReference Include="NLog.InstallNLogConfig" Version="2.0.0" />
+    <PackageReference Include="NLog.Schema" Version="4.6.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
-    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="C:\Users\Christina.Golovach\.nuget\packages\nlog.config\4.5.11\contentFiles\any\any\NLog.config" Link="NLog.config">
+    <None Update="C:\Users\Christina.Golovach\.nuget\packages\nlog.schema\4.6.0\contentFiles\any\any\NLog.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,4 +1,4 @@
-## Task
+## Задание
 
 #### Написать веб апи приложение для работы с изображениями. 
 
@@ -14,11 +14,14 @@ WebJob слушает очередь. При поступлении сообще
 #### Исходное изображение
 ![alt-текст](https://github.com/ChristinaGolovach/AzureBlobStorageWorkshop/blob/master/Screenshot_10.png "Исходное изображение")
 
+
 #### Post endpont
 ![alt-текст](https://github.com/ChristinaGolovach/AzureBlobStorageWorkshop/blob/master/Screenshot_7.png "Post endpont")
 
+
 #### Get(id) endpont
 ![alt-текст](https://github.com/ChristinaGolovach/AzureBlobStorageWorkshop/blob/master/Screenshot_5.png "Get(id) endpont")
+
 
 #### Get endpoint
 ![alt-текст](https://github.com/ChristinaGolovach/AzureBlobStorageWorkshop/blob/master/Screenshot_4.png "Get endpoint")
